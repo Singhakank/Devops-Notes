@@ -1,0 +1,4 @@
+What is source code management repository, why do we need it?
+=================================================================
+In a project development, a team of developers are going to contribute for the project development by writing or building the source code, each of them are going to work on their individual workstation (aka development environment). At the end all the developers source code has to be merged together and has to build/run the application, In order to colloborate and execute the code together the people use Source Code Management Repository
+

@@ -1,0 +1,46 @@
+Developer while developing a project is going to produce sourcecode, a sourcecode is a file written with set of instructions/inputs which is being executed or used for execution.
+There can be multiple different types of source code files written in different technology like
+1. java program (.java)
+2. ansible playbook (.yml)  
+3. chef cookbooks (.rb)
+4. terrform (.tf)
+5. dockerfile
+6. kubernetes spec (pod/nodetype)
+7. xml, json, yaml (acts as an input for programs while executing)
+
+A project comprises of several source code files of different type based on the technology of the project being developed. As the project is very huge and has to write lot of sourcecode to build it, there can be multiple developers works in parallel in developing the project.
+  
+How can multiple developers can collaboratively develop the project?
+There should be a way to integrate or combine the source code that is developed by individual developers of the team and execute together, this can be done through the help of Source code management repository software (scm repo).
+  
+
+Without the SCM Repositories how to manage the collaborative application development?
+People use to follow different technics in doing the collborative application development initial days
+#1 Manually keep track of the files and combine them
+  1. Each and every individual has to make a note of the files being modified as part of the development.
+  2. End of the day all the people has to bring their source code onto one machine and has to merge into master code
+  3. if multiple develpers has modified the same source code files, an extra care has to be taken in merging the changes locally there afer copying onto the golden copy of the source code.
+    
+    
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  

@@ -1,0 +1,38 @@
+class Bid {
+  int id;
+  double amount;
+}
+
+class ProjectEstimate {
+  Map<Integer, Bid> chooseBids;
+  double totalProjectCost;
+  
+  void addBid(Bid) {}
+}
+
+
+class CostAnalyzerService {
+  public Bid getLowestBid(double[] workTypebids) {
+    
+  }
+}
+
+class ProjectService {  
+  
+  public ProjectEstimate getEstimate(double[][] contractbids) {
+    CostAnalyzerService costAnalyzerService;
+    ProjectEstimate projectEstimate = null;
+    
+    for(int i=0;i<contractbids.length;i++) {
+      Bid bid = costAnalyzerService.getLowestBid(contractbids[i]);
+      projectEstimate.addBid(bid);
+    }
+    
+    return projectEstimate;
+  }  
+  
+}
+
+
+
+

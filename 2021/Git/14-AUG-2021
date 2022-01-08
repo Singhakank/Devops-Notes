@@ -1,0 +1,103 @@
+Identity the minimum bid for a workType
+
+public class ProjectEstimate {
+	private Map<Integer, Bid> allotedBids;
+	private double totalProjectEstimate;
+}
+
+// bug
+public class CostAnalyzerService {
+	public Bid getLowestBid(int workTypeId, double[] workTypeBids) {
+		Bid bid = null;
+		double low = 0;
+		int contractId = 0;
+
+		low = workTypeBids[0];
+		for (int i = 1; i < workTypeBids.length; i++) {
+			if (low > workTypeBids[i]) {
+				low = workTypeBids[i];
+				contractId = i;
+			}
+		}
+		bid = new Bid(contractId, workTypeId, low);
+		return bid;
+	}
+}
+
+public class ProjectService {
+  CostAnalyzerService costAnalyzerService;
+  
+  public ProjectService(CostAnalzyerService costAnalyzerService) {
+    this.costAnalyzerService = costAnalyzerService;
+  }
+  
+  public ProjectEstimate getProjectEstimate(double[][] contractorBids) {    
+    ProjectEstimate projectEstimate = null;
+    Bid lowBid = null;
+    double totalProjectEstimate = 0;
+    
+    projectEstimate = new ProjectEstimate();
+    costAnalyzerService = new CostAnalyzerService();
+    for(int workType=0;workType<contractorBids.length;workType++) {
+      lowBid = costAnalyzerService.getLowestBid(workType, contractorBids[workType]);
+      totalProjectEstimate += lowBid.getCost();
+      projectEstimate.put(workType, lowBid);
+    }
+    projectEstimate.setTotalProjectEstimate(totalProjectEstimate);
+    return projectEstimate;
+  }
+}
+
+Mock classes helps us in facilitating the unit testing process independent of another class, they always replace the original class in returning dummy return values onbehalf original.
+Never we should write logic in mock classes, rather they should return dummy return values upon invoking the methods.
+  
+class CostAnalyzerServiceMock extends CostAnalyzerService {
+  public Bid getLowestBid(int workTypeId, double[] workTypeBids) {
+    if(workTypeId == 0) {
+      return new Bid(0, 0, 100000);
+    }else if(workTypeId==1) {
+      return new Bid(1, 1, 120000);
+    }
+    throw new UnSupportedOperationException();
+  }
+}
+
+CostAnalyzerService costAnalyzerService = new CostAnalyzerServiceMock();
+ProjectService projectService = new ProjectService(costAnalyzerService);
+ProjectEstimate projectEstimate = projectService.getProjectEstimate(new double[][]{{}, {}});
+
+
+From the above the CostAnalyzerService is returning static bid values whenever called, with few combination of data, we cannot certify Project Service is working properly, with all the combination of outcomes from CostAnalyzerService we need ceritfy ProjectService is working properly.
+  
+How to do that?
+In order to test with all possible outcomes of CostAnalzyerService we need write several mock classes and pass them while creating the object of ProjectAnalyzer. Looks like we endup in creating lot of mock classes on CostAnalyzerService in returning different combination of outcomes to test ProjectService, it is a tedious and quite time consuming job. 
+  
+To save us in quickly creating these mock classes which returns combinations of outcomes 
+Mockito
+JMock
+EasyMock 
+Frameworks/libraries are introduced.
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+

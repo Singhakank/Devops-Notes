@@ -1,0 +1,142 @@
+#1 how to create an git repository on the local machine
+- create an empty repository directory
+  mkdir getwellrepo
+- cd getwellrepo
+  git init = to initialize an empty git repository locally inside the directory where we ran
+  
+
+#2 File Status Lifecycle in Git
+The Files within the repository can exists in 4 stages
+1. Untracked
+Within the repository if we create a new file, then the file will be in untracked state, which means git dont know about this file and will not include as part of your commit
+
+2. UnModified
+The File is exiting within the repository already comitted and not modified
+
+
+3. Modified
+The File is existing within the repository and already comitted, but we have made changes onto the file
+
+4. Staged
+Files ready for commit are called staged
+
+In git always any file in order to we should first stage the file, then only we can issue the commit.
+#3 how to stage the changes for commit in git?
+we need to run the command git add filename
+
+git add policies.txt = this command will moves an untracked file or modified file to staged
+
+#4 how to commit all the files that are staged?
+once we staged the files we can issue the below command to commit.
+git commit -m "message indicating changes we are commiting"
+
+#5 how to unstage an modified file?
+let us say we modified an existing file in the repository, and we staged it, we realized the changes are not yet completed so we want to unstage it, we can do this using below command
+
+git restore --staged filename = move the file back to modified state
+git reset HEAD filename = moves back the staged file into unstaged
+
+#6 we want to remove the changes we made into an modified file and restore it back to original file of the repository, how to do it?
+git restore filename = will replace with head copy of the repository
+
+-> unmodified->modified->staged
+   unmodified<-modified<-
+               (git restore --staged filename)
+   (git restore filename)
+   
+-> untracked->modified->staged
+            <-
+  (untracked)
+  (git restore --staged filename)
+  
+  
+#7 to quickly add all the files with changes (untracked/modified) to staged we use below command
+git add .
+
+#8 to only stage modified files we can use
+git add -u . = adds all the modified files to stage, untracked files will not be staged
+------------------------------------------------------------------------------------------------------
+
+#9 how to see the commit history of the repository
+git log = gives you all the commits we made on to the repository
+
+
+#10 how to reset the head pointer so that we remove and add the commits
+git reset --hard commit-hash
+
+Managing Git Credentials
+-------------------------
+#1 the git credentials are stored by default as part of windows credentials (remote git repository)
+we need to go and remove the credentials from the wallet
+
+#2 git credentails are maintained at 2 levels in git. (local git repository)
+  2.1 global
+  2.2.repository local
+  
+These credentials are stored by git in ~/.gitconfig file, we can see the contents of the file
+
+#3 to unset the credentails to be used
+git config --global --unset-all user.name (or) user.email
+
+#4 how to set user.name and user.email config for local repo level
+git config user.name sriman
+git config user.email tech.sriman@gmail.com
+we can use --global flag to use the same username and email for all the repositories of the local system.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

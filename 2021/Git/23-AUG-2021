@@ -1,0 +1,115 @@
+git init = creates an empty repository
+git add filename = moves an untracked file into staged or modified file into staged
+git add -U . = moves modified into staged state
+
+How many states in which a file can be there in git?
+In 4 stages
+1. UnTracked
+2. UnModified
+3. Modified
+4. Stage
+
+git commit -m "message"
+git restore --staged filename = will bring back the file from staged to modified (unstage)
+  path: modified->stage->modified
+
+git restore filename = will restore to the HEAD revision of the repository
+modified->unmodified (remove changes we made)
+    
+untracked->staged = want to bring back to untracked how can i do it?
+git restore --staged filename
+
+git status = shows the status of the git repository
+git log = will shows the commit history of the repository
+
+how to move the head pointer of the repository to a specific commit in repository?
+git reset --hard commithash 
+-----------------------------------------------------------------------------------------------------
+How does git keep tracks of the changes we made to the repository?
+git will store the commit information against the username and email address in the repository. if we are working on local git repository we dont need a password just an email and username is sufficient.
+
+how to configure my username and email address for commits in git?
+we can do this at 2 levels
+1. local repository
+2. global
+
+git local configuration will be used while working with commit on that repository only, whereas if we use global configuraiton for all the repo commits the same username and email address will be used.
+  
+  
+git config user.name "username" = user.name is pre-defined property in git, if we configure value for that property git uses the value during commits.
+git config user.email "tech.sriman@gmail.com" = for configuring email
+The above commands will configure user.name and user.email local to the repository only if we want global we need to use --global flag.
+  
+git config --global user.name "username"  
+git config --global user.email "emailaddress"  
+-----------------------------------------------------------------------------------------------------
+A.java
+class A {
+
+}
+-> comitted
+
+A.java
+class A {
+  public static void main(String[] args) {
+  
+  }
+}
+-> comitted
+
+  
+  
+.git
+|-objects
+  |-4c
+    |-30 characters directory
+      |-blobfile
+  |-4d
+    |-39dkduidkdkdd (directory) (parent: commit number)
+      |-blobfile
+-----------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  

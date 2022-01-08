@@ -1,0 +1,191 @@
+JUnit5
+The JUnit5 has been modularized and distributed as 3 modules which can be used independently.
+1. JUnit Platform = The platform is responsible for lauching JUnit Testcase on Jvm. It has provided extensibility api, that can be consumed by the ide (eclipse, intellij etc) to integrate themself with JUnit Framework. This api helps the clients like ides to discover, execute and report test executions easily.  
+  
+2. JUnit Jupiter
+This is the new programming module provided by JUnit5 which has new annnotations and Testlifecycel in comparision with JUnit4.
+  
+3. JUnit Vintage
+Retaining the backward compatibility the JUnit has provided vintage module to write, execution JUnit 3, 4 testcases.
+  
+How to work with JUnit5?
+
+class Caluclator {
+  int add(int a, int b) {
+    return a+b;
+  }
+}  
+
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderScores.class)
+@TestInstance(Lifecycle.PER_CLASS)
+@TestMethodOrder(OrderAnnotation.class)
+class CalculatorTest {
+  // instance variables
+  
+  @BeforeAll
+  public static void startUp() {
+      
+  }
+  
+  @BeforeEach
+  public void init() {
+    // fixture
+  }
+  
+  @Test
+  //@DisplayName("add with 2 positive numbers")
+  @Order(2)
+  public void test_Add_With_Positive_Number() { // test add with postive numbers
+    
+  }
+  
+  @Test
+  //@Disabled
+  @Order(1)
+  //@DisplayName("add with 2 negative numbers")
+  public void testAddWithNegativeNumbers() {
+    
+  }
+  
+  @Test
+  @RepeatedTest(5)
+  @EnableOnOs(OS.WINDOWS)
+  @EnableOnJre(JRE.JAVA_15)
+  @EnableIfEnvironmentVariables(name="env", matches="development")
+  @EnableSystemProperty(name="env", matches="stage")
+  public void testAddWithPostiveAndNegativeNumber(RepetitionInfo repetitionInfo) {
+    // 2nd repetitionInfo.getCurrentRepetition();
+  }
+  
+  @AfterEach
+  public void cleanUp() {
+    //cleanedup
+  }
+  
+  @AfterAll
+  public static void destroy() {
+    
+  }
+}
+
+---------------------------------------------------------------------------------------------------------
+Nested Test
+We can categorize and group test methods into nested test cases classes based on the functionality so that we can easily identify which group of tests are failing at what percentage.
+
+class UserRegistrationTest {
+  
+  @Nested
+  class NewUserRegistrationTest {
+    @Test
+    public void testNewUserRegistrationWithInvalidEmailAddress() {
+    
+    }
+    @Test
+    public void testNewUserRegistrationWithInvalidMobileNumber() {}
+  }
+  @Nested
+  class ExistingUserRegistrationTest {
+    public void testXX(){}
+  }
+  @Nested
+  class ExistingUserDisabledUserRegistrationTest {
+  
+  }
+}
+
+@Tag
+We can mark every test method using @Tag annotation categorizing the type of testing we are performing, like "functional", "performance", "stress", "security" etc, so that we can execute those category tests only when required.
+  
+  
+class CalculatorTest {
+  @Test
+  @Tag("performance")
+  public void testAdd() {
+    
+  }
+}  
+
+Parameterized Test:-
+In JUnit4 it supports parameterized tests, but the drawback with that is for each method we want to test in the target class, we need to write one testcase class to test with all posibilities. In this way we endup in writing more number of testcases classes for each method of the target class.
+  
+So junit5 has introduced a better of writing parameterized test. Instead of binding parameters to the class level we can bind parameters with which we want to test at method level directly  
+  
+class CalculatorTest {
+  
+  @ParameterizedTest
+  @CsvSource(value={"10, 20, 30","10,-20,-10"})
+  public void testAdd(int a, int b, int expectedSum) {
+    int actualSum = 0;
+    actualSum = calculator.add(a, b);
+    assertEquals(expectedSum, actualSum);
+  }
+}  
+
+1. Test Execution Lifecycle [@BeforeAll, @BeforeEach, test method, @AfterEach, @AfterAll]  
+2. @DisplayName(""), @DisplayNameGeneration
+3. @Disabled  
+4. @TestInstance(Lifecycle.PER_CLASS)  
+5. @TestMethodOrder, @Order
+6. If we want to execute a test repeatedly for certain number of times to verify the repeative executions of the same test leads to success or failure, we can use @RepeatedTest("n")  , we can get the current repetition information within the test method by injecting RepetitionInfo object as method parameter
+7. ConditionalTestExecution
+  @EnableOnJre
+  @EnableOnOS
+  @EnableIfEnvironmentVariable
+  @EnableIfSystemProperty
+8. @Nested
+9. @Tag  
+10. Timeout (assertTimeout(Duration, ()->{}))
+11. Exception Test (assertThrows(Exception, ()->{}))
+  
+ParameterizedTest with MethodSource as arguments
+-------------------------------------------------
+class Product {
+  int productNo;
+  String productName;
+  double price;
+}
+class CreditCard {
+  String cardNo;
+  String nameoncard;
+  String cardType;
+  int cvv;
+  String expiry;
+}
+
+class BillManager {
+  public Bill doBilling(List<Product> products, CreditCard card) {
+    Bill bill = new Bill();
+    return bill;
+  }
+}
+
+class BillManagerTest {
+  @ParameterizedTest
+  @MethodSource("getDoBillingParameters")
+  public void testDoBilling(List<Product> products, CreditCard card) {
+  
+  }
+  
+  public static Stream<Arugments> getDoBillingParameters() {
+    return Stream.of(Arguments.arguments(products1, visacard), Arguments.arguments(products2, mastercard), Arguments.arguments(product3, expiredCard));
+  }
+}
+  
+
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+

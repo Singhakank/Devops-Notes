@@ -1,0 +1,255 @@
+What is Mockito, why do we use it?
+Mockito is an opensource framework for mocking objects, so that we can take dependencies of a class as mock objects and can conduct the unit testing of a component easily. It greatly reduces the efforts developing the mock objects in order to perform unit testing process.
+  
+Mock an                   Execute code                validate the code
+dependent object  ->      in the class by using  ->   and verify the mock objects
+                          dependent as mock           are called as expected or not
+
+In the older version of mockito we need to write the code for initializing the mockito and create mocks by calling Mockito.mock(class) as shown below.
+
+@RunWith(MockitoJunitRunner.class)
+class NumberTest {
+  @Before
+  public void init() {
+    MockitoAnnotations.initMocks(this);
+  }
+  @Test
+  public void testMethod() {
+    CostAnalyzerService costAnalyzerService = Mockito.mock(CostAnalyzer.class);
+    Mockito.when(costAnalyzerService.getLowestBid(new double[]{10, 20})).thenReturn(10);    
+  }
+}
+
+In latest version of Mockito they have added support for JUnit5 integration with jupiter, and plenty features are added like
+1. we can create mocks for private methods
+2. we can create mock for final classes
+3. we can create mock for static methods
+4. we can inject or create mocks using annotations.
+  
+JUnit5 + Mockito
+How to initialize the Mockito and create mock objects?
+  
+
+class ArraySorter {
+  
+}
+
+class NumberHelper {
+  ArraySorter arraySorter;
+  public int min(int[] array) {
+    int[] sortedArray = arraySorter.sort(array);
+    return sortedArray[0];
+  }
+}
+
+@ExtendWith(MockitoExtension.class)
+class NumberHelperTest {
+  @Mock
+  ArraySorter arraySorter;
+  
+  @InjectMock
+  NumberHelper numberHelper;
+  int[] array1;
+  int[] array2;
+  
+  @BeforeEach
+  public void init() {
+    array1 = new int[]{10, 39, 32, 23, 1};
+    array1 = new int[]{12, 393, 132, 23, 10};
+    
+    when(arraySorter.sort(array1)).thenReturn(1);
+    when(arraySorter.sort(array2)).thenReturn(10); // we wrote 2 when conditions to return value.
+  }
+  
+  @Test
+  public void testMin() {
+    int expectedMin = 1;
+    int actualMin= numberHelper.min(array1);
+    assertEquals(expectedMin, actualMin);
+  }
+}
+
+If we have mocked multiple when conditions on the mock object, but in immediate test executions if we use apply one of method executions on the mock, the Mockito will throw unnecessary stubbing expection.
+  
+To solve this problem we need to use either linent().when().thenReturn() or @MockitoSettings(strictness = Strictness.LENIENT)
+
+we can not only simulate return values we can even simulate exceptions as well.
+when(arraySorter.sort(new int[]{})).thenThrow(IllegalArgumentException.class);
+  
+------------------------------------------------------------------------------------------------------
+@Spy annotation
+we can mock an original object and modify the return values of the method, but when we call the methods on the spy it performs the operation on real object as well.
+  
+class NumberHelper {
+  @Spy
+  ArraySorter arraySorter;
+  
+  @InjectMocks
+  NumberHelper numberHelper;
+  
+  @BeforeEach
+  public void init() {
+    when(arraySorter.sort(new int[]{20, 30, 11, 10})).thenReturn(new int[]{10, 11, 20, 30});
+  }
+  
+  public void testMin() {
+    int actualMin = numberHelper.min(new int[]{20, 30, 11, 10});
+    
+  }
+}  
+  
+we can test for behaviour of underlying object by using @spy
+  
+#3 verify
+verify is used for performing behavioural test verification, which means upon calling the method on projectService, how many times the method call for getLowestBid(..) should be called on CostAnalyzerService we can verify whether it has made that many number of calls are not using verify.
+  
+verify(costAnalyzerService, atLeast(5)).getLowestBid(Mockito.anyInt(), Mockito.any(double[].class));
+
+
+#4 How to test a void method using mockito
+class BigJar {
+  int big;
+  
+  void store(int number) {
+    if(big < number) {
+      big = number;
+    }
+  }
+  
+  public int getBig() {
+    return big;
+  }
+}
+
+class BigJarTest {
+  @Mock
+  BigJar bigJar;
+  
+  void testStore() {
+    doNothing().when(bigJar.store(10));
+    bigJar.store(10);
+    verify(bigJar, altestOnce()).store(10);
+    assert(10, bigJar.getBig());
+  }
+}
+
+------------------------------------------------------------------------------------------------------
+How to mock static methods?
+  
+class ArrayHelper {
+  public static int[] sort(int[] inArray) {
+    // operation
+    return sortedArray;
+  }
+}
+
+  
+class ArrayHelperTest {
+  public void testSort() {
+    try(MockedStatic<ArrayHelper> arrayHelper = Mockito.mockStatic(ArrayHelper.class)) {
+      arrayHelper.when(()-> ArrayHelper.sort(new int[]{21, 10, 11})).thenReturn(new int[]{10,11,21});
+      assertEquals(arrayHelper.sort(21, 10, 11), new int[]{10, 11, 21});
+    }
+  }
+}  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+

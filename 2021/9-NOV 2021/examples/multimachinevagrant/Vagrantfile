@@ -1,0 +1,22 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.provision "shell", inline: "touch common.success"
+  config.vm.define "dbserver" do | dbconfig |
+    dbconfig.vm.box = "ubuntu/focal64"
+    dbconfig.vm.network "private_network", ip: "192.168.10.23", virtualbox_intnet: "fhnw"
+    dbconfig.vm.provider "virtualbox" do | vb |
+      vb.memory = 1024
+      vb.cpus = 2
+    end
+    dbconfig.vm.provision "shell", inline: "touch dbserver.success"
+  end
+  config.vm.define "javaserver" do | javaconfig |
+    javaconfig.vm.box = "ubuntu/focal64"
+    javaconfig.vm.network "private_network", ip: "192.168.10.24", virtualbox_intnet: "fhnw"
+    javaconfig.vm.network "forwarded_port", host: 80, guest: 8080
+
+    javaconfig.vm.provision "shell", inline: "touch javaserver.success"
+  end
+end

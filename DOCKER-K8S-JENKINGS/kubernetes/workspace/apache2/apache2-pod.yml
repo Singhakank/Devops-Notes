@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: apache2pod
+spec:
+  containers:
+    - name: apache2
+      image: jcrnode.com/docker/ubuntu/apache2:2.4-22.04_beta
+      ports:
+        - containerPorts: 80
+          name: HTTP
+          protocol: TCP
